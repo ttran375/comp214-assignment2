@@ -6,23 +6,29 @@
 -- of your choice. Use initialized variables to provide the total spending amount and product ID.
 DECLARE
     v_total_spending_amount NUMBER := 100; -- Total spending amount
-    v_product_id NUMBER := 4; -- Product ID
-    v_item_cost NUMBER;
+    v_product_id            NUMBER := 4; -- Product ID
+    v_item_cost             NUMBER;
     v_quantity_can_purchase NUMBER := 0;
 BEGIN
-    -- Retrieve item cost
-    SELECT item_cost INTO v_item_cost
-    FROM products
-    WHERE product_id = v_product_id;
-
-    -- Calculate quantity that can be purchased
+ -- Retrieve item cost
+    SELECT
+        item_cost INTO v_item_cost
+    FROM
+        products
+    WHERE
+        product_id = v_product_id;
+ -- Calculate quantity that can be purchased
     WHILE v_total_spending_amount >= v_item_cost LOOP
         v_quantity_can_purchase := v_quantity_can_purchase + 1;
         v_total_spending_amount := v_total_spending_amount - v_item_cost;
     END LOOP;
-
-    -- Display results
-    DBMS_OUTPUT.PUT_LINE('With $' || v_total_spending_amount || ', you can purchase ' || v_quantity_can_purchase || ' units of product ' || v_product_id);
+ -- Display results
+    DBMS_OUTPUT.PUT_LINE('With $'
+                         || v_total_spending_amount
+                         || ', you can purchase '
+                         || v_quantity_can_purchase
+                         || ' units of product '
+                         || v_product_id);
 END;
 
 -- # Question 2 (5 marks)
@@ -35,41 +41,55 @@ DECLARE
     v_idbasket NUMBER := 12; -- Initialized variable providing the IDBASKET value
     v_subtotal NUMBER;
     v_shipping NUMBER;
-    v_tax NUMBER;
-    v_total NUMBER;
+    v_tax      NUMBER;
+    v_total    NUMBER;
 BEGIN
-    -- Retrieve order summary information
-    SELECT SUBTOTAL, SHIPPING, TAX, TOTAL
-    INTO v_subtotal, v_shipping, v_tax, v_total
-    FROM BB_BASKET
-    WHERE IDBASKET = v_idbasket;
-
-    -- Display order summary information
-    DBMS_OUTPUT.PUT_LINE('Order Summary for Basket ID: ' || v_idbasket);
-    DBMS_OUTPUT.PUT_LINE('Subtotal: $' || v_subtotal);
-    DBMS_OUTPUT.PUT_LINE('Shipping: $' || v_shipping);
-    DBMS_OUTPUT.PUT_LINE('Tax: $' || v_tax);
-    DBMS_OUTPUT.PUT_LINE('Total: $' || v_total);
+ -- Retrieve order summary information
+    SELECT
+        SUBTOTAL,
+        SHIPPING,
+        TAX,
+        TOTAL INTO v_subtotal,
+        v_shipping,
+        v_tax,
+        v_total
+    FROM
+        BB_BASKET
+    WHERE
+        IDBASKET = v_idbasket;
+ -- Display order summary information
+    DBMS_OUTPUT.PUT_LINE('Order Summary for Basket ID: '
+                         || v_idbasket);
+    DBMS_OUTPUT.PUT_LINE('Subtotal: $'
+                         || v_subtotal);
+    DBMS_OUTPUT.PUT_LINE('Shipping: $'
+                         || v_shipping);
+    DBMS_OUTPUT.PUT_LINE('Tax: $'
+                         || v_tax);
+    DBMS_OUTPUT.PUT_LINE('Total: $'
+                         || v_total);
 END;
 
 -- # Question 3 (5 marks)
 -- Brewbean’s calculates shipping cost based on the quantity of items in an order. Assume the
 -- quantity column in the BB_BASKET table contains the total number of items in a basket. A
 -- block is needed to check the quantity provided by an initialized variable and determine the
--- shipping cost. Display the calculated shipping cost onscreen ( # capture output in screenshot#  
+-- shipping cost. Display the calculated shipping cost onscreen ( # capture output in screenshot#
 -- Test using the basket IDs 5 and 12, and apply the shipping rates listed in table below.
 -- _Table: Shipping Charges_
 DECLARE
-    v_idbasket NUMBER := 5; -- Initialized variable providing the IDBASKET value
-    v_quantity NUMBER;
+    v_idbasket      NUMBER := 5; -- Initialized variable providing the IDBASKET value
+    v_quantity      NUMBER;
     v_shipping_cost NUMBER;
 BEGIN
-    -- Retrieve the quantity of items from the basket
-    SELECT QUANTITY INTO v_quantity
-    FROM BB_BASKET
-    WHERE IDBASKET = v_idbasket;
-
-    -- Calculate shipping cost based on the quantity
+ -- Retrieve the quantity of items from the basket
+    SELECT
+        QUANTITY INTO v_quantity
+    FROM
+        BB_BASKET
+    WHERE
+        IDBASKET = v_idbasket;
+ -- Calculate shipping cost based on the quantity
     CASE
         WHEN v_quantity <= 5 THEN
             v_shipping_cost := 5; -- $5 flat rate for up to 5 items
@@ -78,9 +98,11 @@ BEGIN
         ELSE
             v_shipping_cost := 10; -- $10 flat rate for more than 10 items
     END CASE;
-
-    -- Display the calculated shipping cost
-    DBMS_OUTPUT.PUT_LINE('Shipping cost for Basket ID ' || v_idbasket || ': $' || v_shipping_cost);
+ -- Display the calculated shipping cost
+    DBMS_OUTPUT.PUT_LINE('Shipping cost for Basket ID '
+                         || v_idbasket
+                         || ': $'
+                         || v_shipping_cost);
 END;
 
 -- # Question 4 (5 marks)
@@ -98,20 +120,29 @@ DECLARE
         tax BB_BASKET.TAX%TYPE,
         total BB_BASKET.TOTAL%TYPE
     );
-    
     v_order_summary order_summary_type;
-    v_idbasket NUMBER := 12; -- Initialized variable providing the IDBASKET value
+    v_idbasket      NUMBER := 12; -- Initialized variable providing the IDBASKET value
 BEGIN
-    -- Retrieve order summary information for the specified basket ID
-    SELECT IDBASKET, SUBTOTAL, SHIPPING, TAX, TOTAL
-    INTO v_order_summary
-    FROM BB_BASKET
-    WHERE IDBASKET = v_idbasket;
-
-    -- Display the order summary information
-    DBMS_OUTPUT.PUT_LINE('Order Summary for Basket ID: ' || v_order_summary.idbasket);
-    DBMS_OUTPUT.PUT_LINE('Subtotal: $' || v_order_summary.subtotal);
-    DBMS_OUTPUT.PUT_LINE('Shipping: $' || v_order_summary.shipping);
-    DBMS_OUTPUT.PUT_LINE('Tax: $' || v_order_summary.tax);
-    DBMS_OUTPUT.PUT_LINE('Total: $' || v_order_summary.total);
+ -- Retrieve order summary information for the specified basket ID
+    SELECT
+        IDBASKET,
+        SUBTOTAL,
+        SHIPPING,
+        TAX,
+        TOTAL INTO v_order_summary
+    FROM
+        BB_BASKET
+    WHERE
+        IDBASKET = v_idbasket;
+ -- Display the order summary information
+    DBMS_OUTPUT.PUT_LINE('Order Summary for Basket ID: '
+                         || v_order_summary.idbasket);
+    DBMS_OUTPUT.PUT_LINE('Subtotal: $'
+                         || v_order_summary.subtotal);
+    DBMS_OUTPUT.PUT_LINE('Shipping: $'
+                         || v_order_summary.shipping);
+    DBMS_OUTPUT.PUT_LINE('Tax: $'
+                         || v_order_summary.tax);
+    DBMS_OUTPUT.PUT_LINE('Total: $'
+                         || v_order_summary.total);
 END;
