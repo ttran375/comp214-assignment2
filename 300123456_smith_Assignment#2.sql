@@ -6,29 +6,30 @@
 -- of your choice. Use initialized variables to provide the total spending amount and product ID.
 DECLARE
     v_total_spending_amount NUMBER := 100; -- Total spending amount
-    v_product_id            NUMBER := 4; -- Product ID
-    v_item_cost             NUMBER;
-    v_quantity_can_purchase NUMBER := 0;
+    v_product_id NUMBER := 4; -- Product ID
+    v_item_cost BB_Product.price%TYPE;
+    v_quantity INTEGER := 0;
 BEGIN
- -- Retrieve item cost
-    SELECT
-        item_cost INTO v_item_cost
-    FROM
-        products
-    WHERE
-        product_id = v_product_id;
- -- Calculate quantity that can be purchased
-    WHILE v_total_spending_amount >= v_item_cost LOOP
-        v_quantity_can_purchase := v_quantity_can_purchase + 1;
-        v_total_spending_amount := v_total_spending_amount - v_item_cost;
-    END LOOP;
- -- Display results
-    DBMS_OUTPUT.PUT_LINE('With $'
-                         || v_total_spending_amount
-                         || ', you can purchase '
-                         || v_quantity_can_purchase
-                         || ' units of product '
-                         || v_product_id);
+    -- Get the cost of the specified item
+    SELECT price INTO v_item_cost
+    FROM BB_PRODUCT
+    WHERE idProduct = v_product_id;
+
+    -- Initialize total cost
+    DECLARE
+        v_total_cost NUMBER := 0;
+    BEGIN
+        -- Calculate the total cost incrementally until it exceeds the spending amount
+        WHILE v_total_cost + v_item_cost <= v_total_spending_amount LOOP
+            v_quantity := v_quantity + 1;
+            v_total_cost := v_quantity * v_item_cost;
+        END LOOP;
+    END;
+
+    -- Output the result
+    DBMS_OUTPUT.PUT_LINE('With $'||v_total_spending_amount||
+                         ', you can purchase '||v_quantity||
+                         ' units of Product ID '||v_product_id);
 END;
 
 -- # Question 2 (5 marks)
