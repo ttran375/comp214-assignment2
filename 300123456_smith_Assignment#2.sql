@@ -24,7 +24,6 @@ BEGIN
     -- Display results
     DBMS_OUTPUT.PUT_LINE('With $' || v_total_spending_amount || ', you can purchase ' || v_quantity_can_purchase || ' units of product ' || v_product_id);
 END;
-/
 
 -- # Question 2 (5 marks)
 -- The Brewbean’s application contains a page displaying order summary information, including
@@ -55,14 +54,37 @@ END;
 /
 
 -- # Question 3 (5 marks)
--- 
 -- Brewbean’s calculates shipping cost based on the quantity of items in an order. Assume the
 -- quantity column in the BB_BASKET table contains the total number of items in a basket. A
 -- block is needed to check the quantity provided by an initialized variable and determine the
 -- shipping cost. Display the calculated shipping cost onscreen ( # capture output in screenshot#  
 -- Test using the basket IDs 5 and 12, and apply the shipping rates listed in table below.
 -- _Table: Shipping Charges_
--- 
+DECLARE
+    v_idbasket NUMBER := 5; -- Initialized variable providing the IDBASKET value
+    v_quantity NUMBER;
+    v_shipping_cost NUMBER;
+BEGIN
+    -- Retrieve the quantity of items from the basket
+    SELECT QUANTITY INTO v_quantity
+    FROM BB_BASKET
+    WHERE IDBASKET = v_idbasket;
+
+    -- Calculate shipping cost based on the quantity
+    CASE
+        WHEN v_quantity <= 5 THEN
+            v_shipping_cost := 5; -- $5 flat rate for up to 5 items
+        WHEN v_quantity <= 10 THEN
+            v_shipping_cost := 8; -- $8 flat rate for 6-10 items
+        ELSE
+            v_shipping_cost := 10; -- $10 flat rate for more than 10 items
+    END CASE;
+
+    -- Display the calculated shipping cost
+    DBMS_OUTPUT.PUT_LINE('Shipping cost for Basket ID ' || v_idbasket || ': $' || v_shipping_cost);
+END;
+/
+
 -- # Question 4 (5 marks)
 -- The Brewbean’s application contains a page displaying order summary information, including
 -- IDBASKET, SUBTOTAL, SHIPPING, TAX, and TOTAL columns from the BB_BASKET
