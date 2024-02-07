@@ -51,7 +51,6 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Tax: $' || v_tax);
     DBMS_OUTPUT.PUT_LINE('Total: $' || v_total);
 END;
-/
 
 -- # Question 3 (5 marks)
 -- Brewbean’s calculates shipping cost based on the quantity of items in an order. Assume the
@@ -83,7 +82,6 @@ BEGIN
     -- Display the calculated shipping cost
     DBMS_OUTPUT.PUT_LINE('Shipping cost for Basket ID ' || v_idbasket || ': $' || v_shipping_cost);
 END;
-/
 
 -- # Question 4 (5 marks)
 -- The Brewbean’s application contains a page displaying order summary information, including
@@ -92,3 +90,28 @@ END;
 -- ( # capture output in screenshot#  ). An initialized variable should provide the IDBASKET valu
 -- Test the block using
 -- the basket ID 12.
+DECLARE
+    TYPE order_summary_type IS RECORD (
+        idbasket BB_BASKET.IDBASKET%TYPE,
+        subtotal BB_BASKET.SUBTOTAL%TYPE,
+        shipping BB_BASKET.SHIPPING%TYPE,
+        tax BB_BASKET.TAX%TYPE,
+        total BB_BASKET.TOTAL%TYPE
+    );
+    
+    v_order_summary order_summary_type;
+    v_idbasket NUMBER := 12; -- Initialized variable providing the IDBASKET value
+BEGIN
+    -- Retrieve order summary information for the specified basket ID
+    SELECT IDBASKET, SUBTOTAL, SHIPPING, TAX, TOTAL
+    INTO v_order_summary
+    FROM BB_BASKET
+    WHERE IDBASKET = v_idbasket;
+
+    -- Display the order summary information
+    DBMS_OUTPUT.PUT_LINE('Order Summary for Basket ID: ' || v_order_summary.idbasket);
+    DBMS_OUTPUT.PUT_LINE('Subtotal: $' || v_order_summary.subtotal);
+    DBMS_OUTPUT.PUT_LINE('Shipping: $' || v_order_summary.shipping);
+    DBMS_OUTPUT.PUT_LINE('Tax: $' || v_order_summary.tax);
+    DBMS_OUTPUT.PUT_LINE('Total: $' || v_order_summary.total);
+END;
