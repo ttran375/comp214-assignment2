@@ -32,7 +32,28 @@ END;
 -- table. Create a PL/SQL block with scalar variables to retrieve this data and then display it
 -- onscreen. An initialized variable should provide the IDBASKET value. Test the block using the
 -- basket ID 12.
--- 
+DECLARE
+    v_idbasket NUMBER := 12; -- Initialized variable providing the IDBASKET value
+    v_subtotal NUMBER;
+    v_shipping NUMBER;
+    v_tax NUMBER;
+    v_total NUMBER;
+BEGIN
+    -- Retrieve order summary information
+    SELECT SUBTOTAL, SHIPPING, TAX, TOTAL
+    INTO v_subtotal, v_shipping, v_tax, v_total
+    FROM BB_BASKET
+    WHERE IDBASKET = v_idbasket;
+
+    -- Display order summary information
+    DBMS_OUTPUT.PUT_LINE('Order Summary for Basket ID: ' || v_idbasket);
+    DBMS_OUTPUT.PUT_LINE('Subtotal: $' || v_subtotal);
+    DBMS_OUTPUT.PUT_LINE('Shipping: $' || v_shipping);
+    DBMS_OUTPUT.PUT_LINE('Tax: $' || v_tax);
+    DBMS_OUTPUT.PUT_LINE('Total: $' || v_total);
+END;
+/
+
 -- # Question 3 (5 marks)
 -- 
 -- Brewbean’s calculates shipping cost based on the quantity of items in an order. Assume the
