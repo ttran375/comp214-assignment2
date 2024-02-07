@@ -1,5 +1,9 @@
 # Assignment #2 – Handling Data in PL/SQL Blocks
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ttran375/comp214-assignment2)
+
+[![Build Status](https://github.com/ttran375/comp214-assignment2/actions/workflows/main.yml/badge.svg)](https://github.com/ttran375/comp214-assignment2/actions/workflows/main.yml)
+
 # Question 1 (5 marks)
 Brewbean’s wants to include a feature in its application that calculates the total amount
 (quantity) of a specified item that can be purchased with a given amount of money. Create a
