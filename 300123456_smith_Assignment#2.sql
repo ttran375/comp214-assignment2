@@ -147,3 +147,4 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Total: $'
                          || v_order_summary.total);
 END;
+
